@@ -89,7 +89,7 @@ public class NotificationManager {
 
         // Listen for MMS events.
         IntentFilter filter = new IntentFilter(TransactionService.TRANSACTION_COMPLETED_ACTION);
-        context.registerReceiver(sBroadcastReceiver, filter);
+        context.getApplicationContext().registerReceiver(sBroadcastReceiver, filter);
     }
 
     private static BroadcastReceiver sBroadcastReceiver = new BroadcastReceiver() {

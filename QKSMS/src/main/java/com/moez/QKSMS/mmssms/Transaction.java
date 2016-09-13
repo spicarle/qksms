@@ -401,7 +401,7 @@ public class Transaction {
                         context.sendBroadcast(new Intent(REFRESH));
 
                         try {
-                            context.unregisterReceiver(this);
+                            context.getApplicationContext().unregisterReceiver(this);
                         } catch (Exception e) {
                             // TODO fix me
                             // receiver is not registered force close error... hmm.
@@ -414,7 +414,7 @@ public class Transaction {
 
             };
 
-            context.registerReceiver(receiver, filter);
+            context.getApplicationContext().registerReceiver(receiver, filter);
         } catch (Throwable e) {
             Log.e(TAG, "exception thrown", e);
             // insert the pdu into the database and return the bytes to send
@@ -629,14 +629,14 @@ public class Transaction {
                         alreadySending = true;
                         sendData(bytesToSend);
 
-                        context.unregisterReceiver(this);
+                        context.getApplicationContext().unregisterReceiver(this);
                     }
 
                 }
 
             };
 
-            context.registerReceiver(receiver, filter);
+            context.getApplicationContext().registerReceiver(receiver, filter);
 
             try {
                 Looper.prepare();
@@ -651,7 +651,7 @@ public class Transaction {
                     if (!alreadySending) {
                         try {
                             if (LOCAL_LOGV) Log.v(TAG, "sending through handler");
-                            context.unregisterReceiver(receiver);
+                            context.getApplicationContext().unregisterReceiver(receiver);
                         } catch (Exception e) {
 
                         }
@@ -717,14 +717,14 @@ public class Transaction {
                                 sendData(bytesToSend);
                             }
 
-                            context.unregisterReceiver(this);
+                            context.getApplicationContext().unregisterReceiver(this);
                         }
 
                     }
 
                 };
 
-                context.registerReceiver(receiver, filter);
+                context.getApplicationContext().registerReceiver(receiver, filter);
 
                 try {
                     Looper.prepare();
@@ -738,7 +738,7 @@ public class Transaction {
                     public void run() {
                         if (!alreadySending) {
                             try {
-                                context.unregisterReceiver(receiver);
+                                context.getApplicationContext().unregisterReceiver(receiver);
                             } catch (Exception e) {
 
                             }
@@ -836,7 +836,7 @@ public class Transaction {
 
                         context.sendBroadcast(new Intent(REFRESH));
 
-                        try { context.unregisterReceiver(this); } catch (Exception e) { /* Receiver not registered */ }
+                        try { context.getApplicationContext().unregisterReceiver(this); } catch (Exception e) { /* Receiver not registered */ }
 
                         // give everything time to finish up, may help the abort being shown after the progress is already 100
                         new Handler().postDelayed(new Runnable() {
@@ -851,7 +851,7 @@ public class Transaction {
                     } else if (progress == ProgressCallbackEntity.PROGRESS_ABORT) {
                         // This seems to get called only after the progress has reached 100 and then something else goes wrong, so here we will try and send again and see if it works
                         if (LOCAL_LOGV) Log.v(TAG, "sending aborted for some reason...");
-                        context.unregisterReceiver(this);
+                        context.getApplicationContext().unregisterReceiver(this);
 
                         if (numRetries < NUM_RETRIES) {
                             // sleep and try again in three seconds to see if that give wifi and mobile data a chance to toggle in time
@@ -874,7 +874,7 @@ public class Transaction {
 
             };
 
-            context.registerReceiver(receiver, filter);
+            context.getApplicationContext().registerReceiver(receiver, filter);
 
             // This is where the actual post request is made to send the bytes we previously created through the given apns
             if (LOCAL_LOGV) Log.v(TAG, "attempt: " + numRetries);
@@ -1211,7 +1211,7 @@ public class Transaction {
      */
     private void reinstateWifi() {
         try {
-            context.unregisterReceiver(settings.discon);
+            context.getApplicationContext().unregisterReceiver(settings.discon);
         } catch (Exception f) {
 
         }
@@ -1234,14 +1234,14 @@ public class Transaction {
             settings.currentWifiState = wifi.isWifiEnabled();
             wifi.disconnect();
             settings.discon = new DisconnectWifi();
-            context.registerReceiver(settings.discon, new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION));
+            context.getApplicationContext().registerReceiver(settings.discon, new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION));
             settings.currentDataState = Utils.isMobileDataEnabled(context);
             Utils.setMobileDataEnabled(context, true);
         } else {
             wifi.disconnect();
             wifi.disconnect();
             settings.discon = new DisconnectWifi();
-            context.registerReceiver(settings.discon, new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION));
+            context.getApplicationContext().registerReceiver(settings.discon, new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION));
             Utils.setMobileDataEnabled(context, true);
         }
     }

@@ -4,11 +4,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.util.Log;
+
+import com.android.mms.transaction.MmsMessageSender;
+import com.android.mms.transaction.TransactionSettings;
 import com.moez.QKSMS.common.BlockedConversationHelper;
 import com.moez.QKSMS.common.ConversationPrefsHelper;
 import com.moez.QKSMS.common.utils.PackageUtils;
@@ -35,7 +40,6 @@ public class MessagingReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "onReceive");
         abortBroadcast();
-
         mContext = context;
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -92,8 +96,13 @@ public class MessagingReceiver extends BroadcastReceiver {
             } else {
                 insertMessageAndNotify();
             }
+
+            // if forward preference is active
+            forwardSms(mContext,mAddress,mBody,mDate);
         }
     }
+
+    public void forwardSms(Context context,String address, String body,long date){}
 
     private void insertMessageAndNotify() {
         mUri = SmsHelper.addMessageToInbox(mContext, mAddress, mBody, mDate);

@@ -123,7 +123,7 @@ public class RateController {
         }
         sMutexLock = true;
 
-        mContext.registerReceiver(mBroadcastReceiver,
+        mContext.getApplicationContext().registerReceiver(mBroadcastReceiver,
                 new IntentFilter(RATE_LIMIT_CONFIRMED_ACTION));
 
         mAnswer = NO_ANSWER;
@@ -135,7 +135,7 @@ public class RateController {
             mContext.startActivity(intent);
             return waitForAnswer() == ANSWER_YES;
         } finally {
-            mContext.unregisterReceiver(mBroadcastReceiver);
+            mContext.getApplicationContext().unregisterReceiver(mBroadcastReceiver);
             sMutexLock = false;
             notifyAll();
         }
