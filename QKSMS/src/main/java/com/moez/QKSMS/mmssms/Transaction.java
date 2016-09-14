@@ -170,7 +170,7 @@ public class Transaction {
 
     }
 
-    private void sendSmsMessage(String text, String[] addresses, long threadId, int delay) {
+    public void sendSmsMessage(String text, String[] addresses, long threadId, int delay) {
         if (LOCAL_LOGV) Log.v(TAG, "message text: " + text);
         Uri messageUri = null;
         int messageId = 0;
