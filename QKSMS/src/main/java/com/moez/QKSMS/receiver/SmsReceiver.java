@@ -34,10 +34,10 @@ public class SmsReceiver extends MessagingReceiver {
            // Message message = new Message("Auto reply " + body, new String[]{address});
            //  transaction.sendNewMessage(message, threadId);
             if("J".equals(body.substring(0,1).toUpperCase())){
-                Log.e("SMSReceiver","Message joueurs");
+                Log.e("SMSReceiver","Message J1");
             }
             if("D".equals(body.substring(0,1).toUpperCase())){
-                Log.e("SMSReceiver","Message dirigeants");
+                Log.e("SMSReceiver","Message D1");
             }
             transaction.sendSmsMessage("Auto reply " + body, new String[]{address}, threadId, 0);
         }
@@ -55,7 +55,7 @@ public class SmsReceiver extends MessagingReceiver {
             String Id = gC.getString(idcolumn);
             int idcolumnGroupId = gC.getColumnIndex(ContactsContract.Groups._ID);
             int groupID = gC.getInt(idcolumnGroupId);
-            if( "JOUEURS".equals(Id) || "DIRIGEANTS".equals(Id) )   {
+            if( "J1".equals(Id) || "D1".equals(Id) )   {
                 getSampleContactList(context, groupID);
             }
             s.add(Id);
